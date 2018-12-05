@@ -14,15 +14,15 @@
         }
 
         #linechart {
-            height: 300px;
-            width: 500px;
+            height: 500px;
+            width: 900px;
             margin: 0 auto;
-            margin-top: 100px;
+            margin-top: 50px;
         }
 
         .overlay {
             fill: none;
-            pointer-events: all;
+            /*pointer-events: all;*/
         }
 
         text {
@@ -38,6 +38,16 @@
             margin: auto;
             width: 300px;
         }
+        
+        div.tooltip {   
+            position: absolute;                                    
+            padding: 5px;               
+            font: 11px monospace;      
+            background: #b3cccc; 
+            border: 0px;        
+            border-radius: 5px;         
+            pointer-events: none;           
+        }
 
     </style>
 </head>
@@ -45,7 +55,7 @@
 <body>
 
     <div id="linechart"></div>
-    <div class="filter"> Filter for top <input style="width: 50px" step="5" id="topFilter" type="number"></div>
+    <div class="filter"> Filter for top <input style="width: 50px" step="5" id="topFilter" value=5 type="number"></div>
 
     <script>
         let dataBank = {}
@@ -56,6 +66,11 @@
         var parseNewDate = d3.timeParse("");
         var teamTotals = {}
         var teamDivs = {}
+        var topFilter = 5
+        var div = d3.select("body")
+            .append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
 
         function sortByDateAscending(a, b) {
             // Dates will be cast to numbers automagically:
@@ -136,7 +151,7 @@
 
         function drawGraph() {
 
-            var svg = d3.select('#linechart').append('svg').attr('height', '300px').attr('width', '500px');
+            var svg = d3.select('#linechart').append('svg').attr('height', '800px').attr('width', '900px');
 
             var xExtent = d3.extent(dataSet, function(d, i) {
                 return d.date
@@ -164,13 +179,13 @@
             //console.log(new Date(xExtent[0]), new Date(xExtent[1]))
             var xOrigScale = d3.scaleTime()
                 .domain([new Date(xExtent[0]), new Date(xExtent[1])])
-                .range([40, 460]);
+                .range([40, 760]);
 
             var xScale = xOrigScale.copy();
 
             var yScale = d3.scaleLinear()
                 .domain([yMin, yMax])
-                .range([220, 2]);
+                .range([420, 2]);
 
 
             var xAxis = d3.axisBottom(xScale).ticks(6);
@@ -178,7 +193,7 @@
 
             var xAxisG = svg.append('g')
                 .attr('id', 'xAxisG')
-                .attr('transform', 'translate(0,220)') //???
+                .attr('transform', 'translate(0,420)') //???
                 .call(xAxis);
 
             var yAxisG = svg.append('g')
@@ -255,13 +270,16 @@
                         path = linesG.append('path')
                             .attr('d', line(dataSet))
                             .attr('id', key.replace(/^[^a-z]+|[^\w:.-]+/gi, ""))
+                            .attr('title', key)
                             .attr('fill', 'none')
+                            .attr('z-index', 10000)
                             .on("mouseover", mouseover)
                             .on("mouseout", mouseout)
+                            .on("mousemove", mousemove)
                             .attr('stroke', function(d) {
                                 return color[teamDivs[key]];
                             })
-                            .attr('stroke-width', 2);
+                            .attr('stroke-width', 4);
 
                         var totalLength = path.node().getTotalLength();
 
@@ -272,53 +290,80 @@
                             .duration(2000)
                             .ease(d3.easeCubicInOut)
                             .attr('stroke-dashoffset', 0);
-                        
+
 
                         paths[key] = path;
                         index--;
                     }
                 }
-                filterLines(5)
+                filterLines(topFilter)
             }
 
             drawLines()
 
-            var clipPath = svg.append('clipPath')
-                .attr('id', 'clip')
-                .append('rect')
-                .attr('x', 40)
-                .attr('y', 0)
-                .attr('height', 240)
-                .attr('width', 500);
+//            var clipPath = svg.append('clipPath')
+//                .attr('id', 'clip')
+//                .append('rect')
+//                .attr('x', 40)
+//                .attr('y', 0)
+//                .attr('height', 240)
+//                .attr('width', 500);
 
-            var focus = svg.append('g')
+            const focus = svg.append('g')
                 .attr('class', 'focus')
-                .style('display', 'none');
+                .style('z-index', -1)
+                .style('opacity', 1);
+
+            focus.append('circle')
+                .attr('r', 2.5);
 
             focus.append('line')
-                .attr('id', 'dotted-line')
-                .attr('x1', 0)
-                .attr('y1', 0)
-                .attr('x2', 0)
-                .attr('y2', 220)
-                .attr('stroke', 'black')
-                .attr('stroke-dasharray', '1, 2');
+                .classed('x', true);
+
+            focus.append('line')
+                .classed('y', true);
+
+            d3.selectAll('.focus')
+                .style('opacity', 0.7);
+
+            d3.selectAll('.focus circle')
+                .style('fill', 'none')
+                .style('stroke', 'black');
+            d3.selectAll('.focus line')
+                .style('fill', 'none')
+                .style('stroke', 'black')
+                .style('stroke-width', '1.5px')
+                .style('stroke-width', '1.5px')
+                .style('stroke-dasharray', '3 3');
+
+            //            var focus = svg.append('g')
+            //                .attr('class', 'focus')
+            //                .style('display', 'none');
+            //
+            //            focus.append('line')
+            //                .attr('id', 'dotted-line')
+            //                .attr('x1', 0)
+            //                .attr('y1', 0)
+            //                .attr('x2', 0)
+            //                .attr('y2', 220)
+            //                .attr('stroke', 'black')
+            //                .attr('stroke-dasharray', '1, 2');
 
 
-            svg.append("rect")
-                .attr("class", "overlay")
-                .attr("width", 500)
-                .attr("height", 240)
-                .on("mouseout", function() {
-                    focus.style('display', 'none');
-                    legend
-                        .transition()
-                        .duration(100)
-                        .style('opacity', '0');
-                })
-                .on("mousemove", mousemove)
-                .style('cursor', 'move')
-                .attr('clip-path', 'url(#clip)');
+//            svg.append("rect")
+//                .attr("class", "overlay")
+//                .attr("width", 500)
+//                .attr("height", 240)
+//                .on("mouseout", function() {
+//                    //focus.style('display', 'none');
+//                    legend
+//                        .transition()
+//                        .duration(100)
+//                        .style('opacity', '0');
+//                })
+//                .on("mousemove", mousemove)
+//                .style('cursor', 'move')
+//                .attr('clip-path', 'url(#clip)');
 
 
             var zoom = d3.zoom()
@@ -362,43 +407,82 @@
 
             function mousemove() {
                 var x = d3.mouse(this)[0];
-
+                var team = d3.select(this).attr('title')
                 var x0 = xScale.invert(d3.mouse(this)[0]),
                     i = bisectDate(dataSet, x0, 1),
                     d0 = dataSet[i - 1],
                     d1 = dataSet[i],
                     d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+                dMonth = d.date.getMonth() + 1
+                div.transition()
+                    .duration(200)
+                    .style("opacity", .9);
+                div.html("Team: " + team + "<br> Points: " + d[team] + "<br> Date: " + dMonth + "/" + d.date.getFullYear())
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY - 28) + "px");
+                
+                focus.style('opacity', 0.8)
+                focus.attr('transform', "translate(" + xScale(new Date(d.date)) + "," + yScale(d[team]) + ")");
+                focus.select('line.x')
+                    .attr('x1', 0)
+                    .attr('x2', -xScale(d.date))
+                    .attr('y1', 0)
+                    .attr('y2', 0);
 
-                focus.style('display', 'block');
-                dateText.style('display', 'block');
-                legend
-                    .transition()
-                    .duration(100)
-                    .style('opacity', '1');
+                focus.select('line.y')
+                    .attr('x1', 0)
+                    .attr('x2', 0)
+                    .attr('y1', 0)
+                    .attr('y2', 450 - yScale(d[team]));
 
-                focus.attr("transform", "translate(" + xScale(new Date(d.date)) + ",0)");
+                //                focus.style('display', 'block');
+                //                dateText.style('display', 'block');
+                //                legend
+                //                    .transition()
+                //                    .duration(100)
+                //                    .style('opacity', '1');
+                //
+                //                focus.attr("transform", "translate(" + xScale(new Date(d.date)) + ",0)");
+                //
+                //                var date = new Date(d.date);
+                //                date = date.toUTCString().split(' ');
+                //                date = date[0] + ' ' + date[1] + ' ' + date[2] + ' ' + date[3];
+                //
+                //                dateText.text(date);
+                //
+                //                for (key in dataSet[0]) {
+                //                    if (key !== 'date') {
+                //                        svg.select('#text' + teamDivs[key])
+                //                            .text(Number(d[key]).toLocaleString());
+                //
+                //                    }
+                //                }
+            }
 
-                var date = new Date(d.date);
-                date = date.toUTCString().split(' ');
-                date = date[0] + ' ' + date[1] + ' ' + date[2] + ' ' + date[3];
-
-                dateText.text(date);
-
-                for (key in dataSet[0]) {
-                    if (key !== 'date') {
-                        svg.select('#text' + teamDivs[key])
-                            .text(Number(d[key]).toLocaleString());
-
-                    }
+            function mouseover() {
+                for (k in teamTotals) {
+                    kId = k.replace(/^[^a-z]+|[^\w:.-]+/gi, "")
+                    d3.select('#' + kId).style('opacity', '0.25')
+                    d3.select('#' + kId).style('pointer-events', 'all')
                 }
+                filterLines(topFilter)
+                //focus.style('display', null)
+                d3.select(this).style('opacity', '1')
+
             }
-            
-            function mouseover(){
-                console.log("over called")//d3.select(this)
-            }
-            
-            function mouseout(){
-                console.log("out called")
+
+            function mouseout() {
+                for (k in teamTotals) {
+                    kId = k.replace(/^[^a-z]+|[^\w:.-]+/gi, "")
+                    d3.select('#' + kId).style('opacity', '1')
+                    d3.select('#' + kId).style('pointer-events', 'all')
+                }
+                filterLines(topFilter)
+                d3.select(this).style('opacity', '1')
+                div.transition()
+                    .duration(200)
+                    .style("opacity", 0);
+                focus.style('opacity', 0)
             }
         }
 
@@ -418,7 +502,6 @@
             }, {});
             for (k in teamTotals) {
                 if (!(k in topSet)) {
-                    console.log(k)
                     kId = k.replace(/^[^a-z]+|[^\w:.-]+/gi, "")
                     d3.select('#' + kId).style('opacity', '0')
                     d3.select('#' + kId).style('pointer-events', 'none')
@@ -431,8 +514,10 @@
                     d3.select('#' + kId).style('opacity', '1')
                     d3.select('#' + kId).style('pointer-events', 'all')
                 }
-                filterLines(+this.value);
+                topFilter = +this.value
+                filterLines(topFilter);
             });
+
 
 
         }
