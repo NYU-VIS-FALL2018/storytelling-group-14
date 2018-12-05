@@ -12,4 +12,4 @@ In this project we ...
 ## More
 [DEMO](https://nyu-vis-fall2018.github.io/storytelling-group-14/)
 
-[Project Descrioption](project.pdf)
+[Project Description](project.pdf)
