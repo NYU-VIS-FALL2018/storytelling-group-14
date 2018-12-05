@@ -10,6 +10,6 @@ Group X (Online: Group 14)
 In this project we ...
 
 ## More
-[DEMO](https://nyu-vis-fall2018.github.io/storytelling-group-14/)
+[DEMO](https://github.com/NYU-VIS-FALL2018/storytelling-group-14/index.html)
 
 [Project Description](project.pdf)
