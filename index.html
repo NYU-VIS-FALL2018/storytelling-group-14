@@ -1,12 +1,441 @@
-<html>
-    <head>
-        <title>Storytelling project</title>
-        <script src="d3.js"></script>
-    </head>
-    <body>
-        <div>My amazing page will goes here</div>
-    </body>
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        #linechart {
+            height: 300px;
+            width: 500px;
+            margin: 0 auto;
+            margin-top: 100px;
+        }
+
+        .overlay {
+            fill: none;
+            pointer-events: all;
+        }
+
+        text {
+            font-size: 10px;
+            font-family: sans-serif;
+        }
+
+        .legend-text {
+            font-size: 11px;
+        }
+        
+        .filter{
+            margin: auto;
+            width: 300px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div id="linechart"></div>
+    <div class="filter"> Filter for top <input style="width: 50px" step="5" id="topFilter" type="number"></div>
+
     <script>
-        console.log(d3);
+        let dataBank = {}
+        let bymonth = {}
+        let dataSet = []
+        var formatTime = d3.timeFormat("%m/%Y");
+        var parseDate = d3.timeParse("%m/%Y");
+        var parseNewDate = d3.timeParse("");
+        var teamTotals = {}
+        var teamDivs = {}
+
+        function sortByDateAscending(a, b) {
+            // Dates will be cast to numbers automagically:
+            return new Date(a.Date) - new Date(b.Date);
+        }
+
+        function loadData() {
+            d3.csv("allLeaguesData2.csv", function(data) {
+                //data.map(groupmonth)
+                data = data.sort(sortByDateAscending)
+                for (var k = 0; k < data.length; k++) {
+                    teamTotals[data[k].teamWon] = 0
+                }
+
+                for (var i = 0; i < data.length; i++) {
+                    d = new Date(data[i].Date)
+                    //console.log(formatTime(parseDate(d)))
+                    if (d >= new Date('2018-12-01') || d <= new Date('1995-07-31') || data[i].teamWon == "Blank") {
+                        continue
+                    }
+
+                    teamDivs[data[i].teamWon] = data[i].Div
+                    dKey = d.getMonth() + 1 + "/" + d.getFullYear()
+                    if (dKey == "08/1995") {
+                        if (dKey in dataBank) {
+                            if (data[i].teamWon in dataBank[dKey]) {
+                                teamTotals[data[i].teamWon] += 1
+                            } else {
+                                teamTotals[data[i].teamWon] = 1
+                            }
+                        } else {
+                            dataBank[dKey] = {}
+                            teamTotals[data[i].teamWon] = 1
+                        }
+                        dataBank[dKey] = JSON.parse(JSON.stringify(teamTotals))
+                    } else {
+                        if (dKey in dataBank) {
+                            if (data[i].teamWon in dataBank[dKey]) {
+                                teamTotals[data[i].teamWon] += 1
+                            } else {
+                                if (data[i].teamWon in teamTotals) {
+                                    teamTotals[data[i].teamWon] += 1
+                                } else {
+                                    teamTotals[data[i].teamWon] = 1
+                                }
+                            }
+                        } else {
+                            dataBank[dKey] = {}
+                            if (data[i].teamWon in teamTotals) {
+                                teamTotals[data[i].teamWon] += 1
+                            } else {
+                                teamTotals[data[i].teamWon] = 1
+                            }
+
+                        }
+                        dataBank[dKey] = JSON.parse(JSON.stringify(teamTotals))
+                    }
+
+                }
+
+                var dateKeys = Object.keys(dataBank)
+                for (var j = 0; j < dateKeys.length; j++) {
+                    //console.log(parseDate(dateKeys[j]))
+                    var json = {
+                        "date": parseDate(dateKeys[j])
+                    }
+                    var mergedJson = Object.assign(json, dataBank[dateKeys[j]]);
+                    dataSet.push(mergedJson)
+                }
+                console.log(dataSet)
+                drawGraph()
+            });
+
+        }
+
+
+        loadData()
+
+        function drawGraph() {
+
+            var svg = d3.select('#linechart').append('svg').attr('height', '300px').attr('width', '500px');
+
+            var xExtent = d3.extent(dataSet, function(d, i) {
+                return d.date
+            });
+
+
+            var yValues = [];
+
+            dataSet.forEach(function(d) {
+                for (key in d) {
+                    if (key !== 'date') {
+                        yValues.push(d[key]);
+                    }
+                }
+            });
+
+
+            var yMin = d3.min(yValues, function(d, i) {
+                return d;
+            });
+            var yMax = d3.max(yValues, function(d, i) {
+                return d;
+            });
+            //console.log(yMin, yMax)
+            //console.log(new Date(xExtent[0]), new Date(xExtent[1]))
+            var xOrigScale = d3.scaleTime()
+                .domain([new Date(xExtent[0]), new Date(xExtent[1])])
+                .range([40, 460]);
+
+            var xScale = xOrigScale.copy();
+
+            var yScale = d3.scaleLinear()
+                .domain([yMin, yMax])
+                .range([220, 2]);
+
+
+            var xAxis = d3.axisBottom(xScale).ticks(6);
+            var yAxis = d3.axisLeft(yScale);
+
+            var xAxisG = svg.append('g')
+                .attr('id', 'xAxisG')
+                .attr('transform', 'translate(0,220)') //???
+                .call(xAxis);
+
+            var yAxisG = svg.append('g')
+                .attr('id', 'yAxisG')
+                .attr('transform', 'translate(40,0)') //???
+                .call(yAxis);
+
+
+            var color = {
+                "Germany": '#d62728',
+                "Italy": '#2ca02c',
+                "Spain": '#ff7f0e',
+                "England": '#1f77b4',
+                "France": '#9467bd'
+            }
+
+            var linesG = svg.append('g');
+
+            var legend = svg.append('g')
+                .attr('id', 'legend')
+                .attr('transform', 'translate(60, 250)')
+                .style('opacity', '0');
+
+            for (var i = 0; i < 5; i++) {
+                legend.append('rect')
+                    .attr('class', 'legend-text')
+                    .attr('fill', color[Object.keys(color)[i]])
+                    .attr('x', function() {
+                        return 60 * i + 120;
+                    })
+                    .attr('height', 20)
+                    .attr('width', 20)
+                    .attr('y', 5);
+
+                legend.append('text')
+                    .attr('id', 'text' + Object.keys(color)[i])
+                    .attr('class', 'legend-text')
+                    .attr('fill', 'black')
+                    .attr('x', function() {
+                        return 60 * i + 143;
+                    })
+                    .attr('y', 20);
+            }
+
+
+
+            var dateText = legend.append('text')
+                .attr('id', 'date-text')
+                .attr('class', 'legend-text')
+                .attr('x', 0)
+                .attr('y', 20);
+
+            var lines = {};
+            var paths = {};
+            var index = Object.keys(dataSet[0]).length - 1;
+
+            function drawLines() {
+                for (key in dataSet[0]) {
+
+                    if (key !== 'date') {
+
+                        var line = d3.line()
+                            .x(function(d) {
+                                return xScale(new Date(d.date));
+                            })
+                            .y(function(d) {
+                                return yScale(d[key]);
+                            })
+                            .curve(d3.curveCatmullRom.alpha(0.5));
+
+                        lines[key] = line;
+
+
+                        path = linesG.append('path')
+                            .attr('d', line(dataSet))
+                            .attr('id', key.replace(/^[^a-z]+|[^\w:.-]+/gi, ""))
+                            .attr('fill', 'none')
+                            .on("mouseover", mouseover)
+                            .on("mouseout", mouseout)
+                            .attr('stroke', function(d) {
+                                return color[teamDivs[key]];
+                            })
+                            .attr('stroke-width', 2);
+
+                        var totalLength = path.node().getTotalLength();
+
+                        path
+                            .attr('stroke-dasharray', totalLength + ' ' + totalLength)
+                            .attr('stroke-dashoffset', totalLength)
+                            .transition()
+                            .duration(2000)
+                            .ease(d3.easeCubicInOut)
+                            .attr('stroke-dashoffset', 0);
+                        
+
+                        paths[key] = path;
+                        index--;
+                    }
+                }
+                filterLines(5)
+            }
+
+            drawLines()
+
+            var clipPath = svg.append('clipPath')
+                .attr('id', 'clip')
+                .append('rect')
+                .attr('x', 40)
+                .attr('y', 0)
+                .attr('height', 240)
+                .attr('width', 500);
+
+            var focus = svg.append('g')
+                .attr('class', 'focus')
+                .style('display', 'none');
+
+            focus.append('line')
+                .attr('id', 'dotted-line')
+                .attr('x1', 0)
+                .attr('y1', 0)
+                .attr('x2', 0)
+                .attr('y2', 220)
+                .attr('stroke', 'black')
+                .attr('stroke-dasharray', '1, 2');
+
+
+            svg.append("rect")
+                .attr("class", "overlay")
+                .attr("width", 500)
+                .attr("height", 240)
+                .on("mouseout", function() {
+                    focus.style('display', 'none');
+                    legend
+                        .transition()
+                        .duration(100)
+                        .style('opacity', '0');
+                })
+                .on("mousemove", mousemove)
+                .style('cursor', 'move')
+                .attr('clip-path', 'url(#clip)');
+
+
+            var zoom = d3.zoom()
+                .scaleExtent([1, 10])
+                .on('zoom', zoomed);
+
+            svg.call(zoom);
+
+            function zoomed() {
+                console.log('zoomed');
+
+                xScale = d3.event.transform.rescaleX(xOrigScale);
+
+                xAxisG.call(xAxis.scale(d3.event.transform.rescaleX(xOrigScale)));
+
+                for (key in dataSet[0]) {
+                    if (key !== 'date') {
+
+                        line = lines[key];
+                        path = paths[key];
+
+                        totalLength = path.node().getTotalLength();
+
+                        path
+                            .attr('stroke-dasharray', totalLength + ' ' + totalLength)
+                            .attr('stroke-dashoffset', totalLength)
+                            .attr('stroke-dashoffset', 0);
+
+                        path.attr('d', line(dataSet));
+                        path.attr('clip-path', 'url(#clip)');
+
+                    }
+                }
+
+            }
+
+
+            var bisectDate = d3.bisector(function(d) {
+                return new Date(d.date);
+            }).left;
+
+            function mousemove() {
+                var x = d3.mouse(this)[0];
+
+                var x0 = xScale.invert(d3.mouse(this)[0]),
+                    i = bisectDate(dataSet, x0, 1),
+                    d0 = dataSet[i - 1],
+                    d1 = dataSet[i],
+                    d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+
+                focus.style('display', 'block');
+                dateText.style('display', 'block');
+                legend
+                    .transition()
+                    .duration(100)
+                    .style('opacity', '1');
+
+                focus.attr("transform", "translate(" + xScale(new Date(d.date)) + ",0)");
+
+                var date = new Date(d.date);
+                date = date.toUTCString().split(' ');
+                date = date[0] + ' ' + date[1] + ' ' + date[2] + ' ' + date[3];
+
+                dateText.text(date);
+
+                for (key in dataSet[0]) {
+                    if (key !== 'date') {
+                        svg.select('#text' + teamDivs[key])
+                            .text(Number(d[key]).toLocaleString());
+
+                    }
+                }
+            }
+            
+            function mouseover(){
+                console.log("over called")//d3.select(this)
+            }
+            
+            function mouseout(){
+                console.log("out called")
+            }
+        }
+
+        function filterLines(n) {
+            var props = Object.keys(teamTotals).map(function(key) {
+                return {
+                    key: key,
+                    value: this[key]
+                };
+            }, teamTotals);
+            props.sort(function(p1, p2) {
+                return p2.value - p1.value;
+            });
+            var topSet = props.slice(0, n).reduce(function(obj, prop) {
+                obj[prop.key] = prop.value;
+                return obj;
+            }, {});
+            for (k in teamTotals) {
+                if (!(k in topSet)) {
+                    console.log(k)
+                    kId = k.replace(/^[^a-z]+|[^\w:.-]+/gi, "")
+                    d3.select('#' + kId).style('opacity', '0')
+                    d3.select('#' + kId).style('pointer-events', 'none')
+                }
+            }
+
+            d3.select("#topFilter").on("input", function() {
+                for (k in teamTotals) {
+                    kId = k.replace(/^[^a-z]+|[^\w:.-]+/gi, "")
+                    d3.select('#' + kId).style('opacity', '1')
+                    d3.select('#' + kId).style('pointer-events', 'all')
+                }
+                filterLines(+this.value);
+            });
+
+
+        }
+
     </script>
-</html>
+</body>
