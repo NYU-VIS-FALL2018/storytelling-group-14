@@ -457,7 +457,22 @@ slider.oninput = function() {
                 .attr('id', 'yAxisG')
                 .attr('transform', 'translate(40,0)')
                 .call(yAxis);
-            var color = {
+            
+		
+		svg.append("text")             
+      			.attr('transform', 'translate(-14,300)')
+      			.style("text-anchor", "middle")
+      			.text("Date");
+		svg.append("text")
+      			.attr("transform", "rotate(-90)")
+      			.attr('transform', 'translate(40,0)')
+      			.attr("dy", "1em")
+      			.style("text-anchor", "middle")
+      			.text("Value");
+	
+		
+		
+		var color = {
                 "Germany": '#d62728',
                 "Italy": '#2ca02c',
                 "Spain": '#ff7f0e',
