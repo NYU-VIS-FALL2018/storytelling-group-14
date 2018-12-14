@@ -158,7 +158,6 @@
     }
     
     
-		
     </style>
 	<style>
 
@@ -488,7 +487,7 @@ slider.oninput = function() {
       			.text("Total Number of Wins");
 	
 		
-		
+		/*
 		var color = {
                 "Germany": '#d62728',
                 "Italy": '#2ca02c',
@@ -496,6 +495,19 @@ slider.oninput = function() {
                 "England": '#1f77b4',
                 "France": '#9467bd'
             }
+		*/
+		var color = {
+				'Liverpool': '#4d4d4d',
+				'Man United': '#5da5da',
+				'Arsenal': '#faa43a',
+				'Barcelona': '#60bd68',
+				'Real Madrid': '#f17cb0',
+				'Inter': '#b2912f',
+				'Lyon': '#b276b2',
+				'Juventus': '#decf3f',
+				'Chelsea': '#f15854',
+				'Bayern Munich':'#1f77b4'
+			}
             var linesG = svg.append('g');
             var legend = svg.append('g')
                 .attr('id', 'legend')
@@ -528,7 +540,9 @@ slider.oninput = function() {
             var lines = {};
             var paths = {};
             var index = Object.keys(dataSet[0]).length - 1;
+			
             function drawLines() {
+				var colorline = 0
                 for (key in dataSet[0]) {
                     if (key !== 'season') {
                         var line = d3.line()
@@ -550,7 +564,8 @@ slider.oninput = function() {
                             .on("mouseout", mouseout)
                             //.on("mousemove", mousemove)
                             .attr('stroke', function(d) {
-                                return color[teamDivs[key]];
+								colorline += 1;
+                                return color[key];
                             })
                             .attr('stroke-width', 1);
                         var totalLength = path.node().getTotalLength();
@@ -789,14 +804,26 @@ slider.oninput = function() {
       			.style("text-anchor", "middle")
 			.style("font-weight", "bold")
       			.text("Number of Matches");
-	
+			/*
             var color = {
                 "Germany": '#d62728',
                 "Italy": '#2ca02c',
                 "Spain": '#ff7f0e',
                 "England": '#1f77b4',
                 "France": '#9467bd'
-            }
+            }*/
+			var color = {
+				'Liverpool': '#4d4d4d',
+				'Man United': '#5da5da',
+				'Arsenal': '#faa43a',
+				'Barcelona': '#60bd68',
+				'Real Madrid': '#f17cb0',
+				'Inter': '#b2912f',
+				'Lyon': '#b276b2',
+				'Juventus': '#decf3f',
+				'Chelsea': '#f15854',
+				'Bayern Munich':'#1f77b4'
+			}
             var linesG = comebackSvg.append('g');
             var legend = comebackSvg.append('g')
                 .attr('id', 'legend')
@@ -831,8 +858,12 @@ slider.oninput = function() {
             var index = Object.keys(dataSet[0]).length - 1;
             var lastRow = dataSet[dataSet.length - 1]
             console.log(lastRow)
+			var colorCircle = 0
             for (key in lastRow) {
                 if (key !== 'season') {
+					colorCircle += 1
+					console.log(color[key])
+					console.log(key)
                     comebackSvg.append("circle") // Uses the enter().append() method
                         .attr("class", "dot" + key.replace(/^[^a-z]+|[^\w:.-]+/gi, "")) // Assign a class for styling
                         .attr("cx", function(d, i) {
@@ -841,10 +872,10 @@ slider.oninput = function() {
                         .attr("cy", function(d) {
                             return yScale(dataSet[0][key][1])
                         })
-                        .attr('fill', color[teamDivs[key]])
+                        .attr('fill', color[key])
                         .attr('fill-opacity', 0.5)
                         .attr('title', key)
-                        .attr('stroke', color[teamDivs[key]])
+                        .attr('stroke', color[key])
                         .attr("r", function() {
                             if (dataSet[0][key][1] == 0) {
                                 return 1
@@ -856,8 +887,11 @@ slider.oninput = function() {
                         .on("mouseout", mouseout);
                 }
             }
+			var colorCircle = 0
             for (key in lastRow) {
                 if (key !== 'season') {
+					colorCircle += 1
+					
                     comebackSvg.selectAll(".dot" + key.replace(/^[^a-z]+|[^\w:.-]+/gi, ""))
                         .transition() // Transition from old to new
                         .duration(8000) // Length of animation
@@ -868,10 +902,10 @@ slider.oninput = function() {
                         .attr("cy", function(d) {
                             return yScale(lastRow[key][1])
                         })
-                        .attr('fill', color[teamDivs[key]])
+                        .attr('fill', color[key])
                         .attr('fill-opacity', 0.5)
                         .attr('title', key)
-                        .attr('stroke', color[teamDivs[key]])
+                        .attr('stroke', color[key])
                         .attr("r", function() {
                             if (lastRow[key][1] == 0) {
                                 return 1
@@ -892,7 +926,7 @@ slider.oninput = function() {
                             })
                             .curve(d3.curveCatmullRom.alpha(0.5));
                         lines[key] = line;
-			/*    
+						/*
                         path = linesG.append('path')
                             .attr('d', line(dataSet))
                             .attr('id', key.replace(/^[^a-z]+|[^\w:.-]+/gi, ""))
@@ -915,7 +949,7 @@ slider.oninput = function() {
                             .ease(d3.easeCubicInOut)
                             .attr('stroke-dashoffset', 0);
                         paths[key] = path;
-			*/
+						*/
                         index--;
 			
                     }
@@ -1023,9 +1057,9 @@ slider.oninput = function() {
 		
 		
 		
-		var margin = {top: 100, right: 900, bottom: 40, left: 900};
+		var margin = {top: 100, right: 850, bottom: 40, left: 850};
 	   
-		var width = 2100 - margin.left - margin.right,
+		var width = 1800 - margin.left - margin.right,
 			height = 760 - margin.top - margin.bottom;
 			
 		var svg = d3.select("body").append("svg")
