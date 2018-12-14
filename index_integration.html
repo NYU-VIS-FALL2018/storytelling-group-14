@@ -213,8 +213,17 @@
         Now that we got that out of the way, lets focus on the 10 biggest clubs. (Sorry fans of other clubs. Your teams just aren't big enough in history. Maybe soon?) Lets match them up based on the number of comebacks completed vs the number of wins over time. A comeback king is a team that customarily wins, but when faced with the rare obstacle of traling, digs down deep to grab that excusive comeback. They should stick out on the top right corner of the graph.</div>
     <div id="comebackChart"></div>
     <div class="filter"> Filter for top <input step="5" id="topFilter" class="slider" value=10 type="range" min="1" max="227"></div>
-
+	<p>Value: <span id="filterValue"></span></p>
     <script>
+var slider = document.getElementById("topFilter");
+var output = document.getElementById("filterValue");
+output.innerHTML = slider.value;
+
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
+</script>
+	<script>
         let dataBank = {}
         let bymonth = {}
         let dataSet = []
