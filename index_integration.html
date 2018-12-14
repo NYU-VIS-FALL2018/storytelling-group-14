@@ -53,6 +53,29 @@
             margin: auto;
             width: 300px;
         }
+	    
+	    
+	 .rotate {
+
+		/* Safari */
+		-webkit-transform: rotate(-90deg);
+
+		/* Firefox */
+		-moz-transform: rotate(-90deg);
+
+		/* IE */
+		-ms-transform: rotate(-90deg);
+
+		/* Opera */
+		-o-transform: rotate(-90deg);
+
+		float: left;
+
+		}
+	    
+	    
+	    
+	    
         div.tooltip {
             position: absolute;
             padding: 5px;
@@ -466,7 +489,7 @@ slider.oninput = function() {
       			.text("Span of Years");
 		svg.append("text")
       			.attr('transform', 'rotate(-65)')
-      			.attr('transform', 'translate(0,150)')
+      			.attr('class', 'rotate')
       			.style("text-anchor", "middle")
       			.text("Total Number of Wins");
 	
