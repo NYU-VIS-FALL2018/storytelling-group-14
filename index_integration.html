@@ -805,6 +805,7 @@
                             })
                             .curve(d3.curveCatmullRom.alpha(0.5));
                         lines[key] = line;
+			/*    
                         path = linesG.append('path')
                             .attr('d', line(dataSet))
                             .attr('id', key.replace(/^[^a-z]+|[^\w:.-]+/gi, ""))
@@ -828,6 +829,7 @@
                             .attr('stroke-dashoffset', 0);
                         paths[key] = path;
                         index--;
+			*/
                     }
                 }
                 filterLines(11)
