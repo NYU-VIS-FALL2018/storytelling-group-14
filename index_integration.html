@@ -486,7 +486,7 @@ slider.oninput = function() {
 			.style("font-weight", "bold")
       			.text("Span of Years");
 		svg.append("text")
-      			.attr('transform', 'rotate(-65)')
+      			.attr('transform', 'translate(0,150)')
       			.attr('class', 'rotate')
       			.style("text-anchor", "middle")
       			.text("Total Number of Wins");
@@ -782,6 +782,18 @@ slider.oninput = function() {
                 .attr('id', 'yAxisG')
                 .attr('transform', 'translate(40,0)') //???
                 .call(yAxis);
+		
+		svg.append("text")             
+      			.attr('transform', 'translate(300,370)')
+      			.style("text-anchor", "middle")
+			.style("font-weight", "bold")
+      			.text("Total Number of Wins");
+		svg.append("text")
+      			.attr('transform', 'translate(0,150)')
+      			.attr('class', 'rotate')
+      			.style("text-anchor", "middle")
+      			.text("Number of Matches");	
+	
             var color = {
                 "Germany": '#d62728',
                 "Italy": '#2ca02c',
