@@ -25,7 +25,7 @@
         }
         
         #linechart {
-            height: 360px;
+            height: 380px;
             width: 41%;
             margin: 0 auto;
             margin-top: 35px;
@@ -460,15 +460,15 @@ slider.oninput = function() {
             
 		
 		svg.append("text")             
-      			.attr('transform', 'translate(-14,300)')
+      			.attr('transform', 'translate(300,370)')
       			.style("text-anchor", "middle")
-      			.text("Date");
+			.style("font-weight", "bold")
+      			.text("Span of Years");
 		svg.append("text")
-      			.attr("transform", "rotate(-90)")
-      			.attr('transform', 'translate(40,0)')
-      			.attr("dy", "1em")
+      			.attr('transform', 'rotate(-65)')
+      			.attr('transform', 'translate(0,150)')
       			.style("text-anchor", "middle")
-      			.text("Value");
+      			.text("Total Number of Wins");
 	
 		
 		
