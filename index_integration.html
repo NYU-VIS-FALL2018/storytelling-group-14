@@ -959,6 +959,9 @@ slider.oninput = function() {
                     kId = k.replace(/^[^a-z]+|[^\w:.-]+/gi, "")
                     d3.selectAll('#' + kId).style('opacity', '0.25')
                     d3.selectAll('#' + kId).style('pointer-events', 'all')
+		    d3.selectAll('.voronoi').style('opacity', '0.25')
+                    d3.selectAll('.voronoi').style('pointer-events', 'all')
+		     
                 }
                 filterLines(topFilter)
                 //focus.style('display', null)
