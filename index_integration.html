@@ -132,7 +132,7 @@
 		
 		
 		.slope-line {
-      stroke: #333;
+      
       stroke-width: 2px;
       stroke-linecap: round;
     }
@@ -1126,7 +1126,18 @@ slider.oninput = function() {
 					}
 				}
 			}
-			
+			var color = {
+				'Liverpool': '#4d4d4d',
+				'Man Utd': '#5da5da',
+				'Arsenal': '#faa43a',
+				'Barcelona': '#60bd68',
+				'Real Madrid': '#f17cb0',
+				'Inter': '#b2912f',
+				'Lyon': '#b276b2',
+				'Juventus': '#decf3f',
+				'Chelsea': '#f15854',
+				'Bayern':'#1f77b4'
+			}
 			
 			// Combine ratios into a single array
 			var i = 0
@@ -1243,7 +1254,7 @@ slider.oninput = function() {
 				d.values[0].group = this;
 
 			  });
-
+			console.log(nestedByName)
 			var slopeLines = slopeGroups.append("line")
 			.attr("class", "slope-line")
 			.attr("x1", 0)
@@ -1253,7 +1264,8 @@ slider.oninput = function() {
 			.attr("x2", config.width)
 			.attr("y2", function(d) {
 			  return y1(d.values[0].FTShots);
-			});
+			})
+			.attr('stroke', function(d) { return color[d.key]; });
 			
 			
 			var slopeLines = slopeGroups.append("line")
@@ -1265,7 +1277,9 @@ slider.oninput = function() {
 			.attr("x2", config.width + config.width + 350)
 			.attr("y2", function(d) {
 			  return y1Pos(d.values[0].FTPossession);
-			});
+			})
+			.attr('stroke', function(d) { return color[d.key]; });
+			
 			
 			var slopeLines = slopeGroups.append("line")
 			.attr("class", "slope-line")
@@ -1276,7 +1290,8 @@ slider.oninput = function() {
 			.attr("x2", config.width + config.width + config.width+350+ 350)
 			.attr("y2", function(d) {
 			  return y1Foul(d.values[0].FTFoul);
-			});
+			})
+			.attr('stroke', function(d) { return color[d.key]; });
 			
       var leftSlopeCircle = slopeGroups.append("circle")
       	.attr("r", config.radius)
@@ -1556,6 +1571,7 @@ slider.oninput = function() {
       		.attr("d", function(d) { return d ? "M" + d.join("L") + "Z" : null; })
       		.on("mouseover", mouseover)
       		.on("mouseout", mouseout);	
+			
 			
     });
 
