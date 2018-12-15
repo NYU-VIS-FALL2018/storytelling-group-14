@@ -839,7 +839,6 @@
                     kId = k.replace(/^[^a-z]+|[^\w:.-]+/gi, "")
                     d3.selectAll('#' + kId).style('opacity', '0.25')
                     d3.selectAll('#' + kId).style('pointer-events', 'all')
-		     
                 }
                 filterLines(topFilter)
                 //focus.style('display', null)
@@ -1056,9 +1055,13 @@
 				.data(nestedByName)
 				.enter().append("g")
 				.attr("class", "slope-group")
+				//.attr("id", d.key);
 				.attr("id", function(d, i) {
+					console.log(i)
 					d.id = "group" + i;
 					d.values[0].group = this;
+					console.log(d.values[0])
+					return d.values[0].name
 				});
 				
 			var slopeLines = slopeGroups.append("line")
@@ -1361,7 +1364,7 @@
 
     
     function mouseover(d) {
-		console.log(d)
+		//console.log(d.data)
 		d3.select(d.data.group).attr("opacity", 1);
     }
     
