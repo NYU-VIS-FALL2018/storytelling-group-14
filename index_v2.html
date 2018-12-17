@@ -1589,7 +1589,10 @@
 
         function mouseover(d) {
             console.log(d)
-            d3.select(d.data.group).attr("opacity", 1);
+            //d3.select(d.data.group).attr("opacity", 1);
+	    var id = d3.select(this).attr('id')
+            console.log(id)
+            d3.selectAll('#' + id).style('opacity', '1')
         }
 
         function mouseout(d) {
