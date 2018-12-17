@@ -1593,6 +1593,8 @@
             //d3.select(d.data.group.id).attr("opacity", 1);
 	    //var id = d3.select(this).attr('id')
             console.log(id)
+	    d3.selectAll(".slope-group")
+                .attr("opacity", 0.3);
             d3.selectAll('#' + id).style('opacity', '1')
         }
 
