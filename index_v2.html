@@ -1276,6 +1276,9 @@
                     d.id = "group" + i;
                     d.values[0].group = this;
                     console.log(d.values[0])
+		    if (d.values[0].name === "Man Utd"){return "ManUnited"}
+		    if (d.values[0].name === "Bayern"){return "BayernMunich"}
+		    if (d.values[0].name === "Real Madrid"){return "RealMadrid"}
                     return d.values[0].name
                 });
 
