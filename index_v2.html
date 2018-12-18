@@ -1441,7 +1441,7 @@
 
             var rightSlopeCircle = slopeGroups.append("circle")
                 .attr("r", config.radius)
-                .attr("cx", 380 + config.width)
+                .attr("cx", 380)
                 .attr("cy", d => y1Pos(d.values[0].FTPossession));
 
             var rightSlopeLabels = slopeGroups.append("g")
@@ -1470,7 +1470,7 @@
 
             var rightSlopeCircle = slopeGroups.append("circle")
                 .attr("r", config.radius)
-                .attr("cx", 630 + config.width)
+                .attr("cx", 630)
                 .attr("cy", d => y1Foul(d.values[0].FTFoul));
 
             var rightSlopeLabels = slopeGroups.append("g")
