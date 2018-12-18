@@ -1097,8 +1097,8 @@
             bottom: 40,
             left: 850
         };
-        var width = 800 - margin.left - margin.right,
-            height = 460 - margin.top - margin.bottom;
+        var width = 1000 - margin.left - margin.right,
+            height = 550 - margin.top - margin.bottom;
         var svg = d3.select("body").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
@@ -1242,26 +1242,26 @@
                 .attr("x1", 0).attr("y1", 0)
                 .attr("x2", 0).attr("y2", config.height);
             borderLines.append("line")
-                .attr("x1", 100).attr("y1", 0)
-                .attr("x2", 100).attr("y2", config.height);
+                .attr("x1", 80).attr("y1", 0)
+                .attr("x2", 80).attr("y2", config.height);
 
             var borderLines = svg.append("g")
                 .attr("class", "border-lines")
             borderLines.append("line")
-                .attr("x1", 250).attr("y1", 0)
-                .attr("x2", 250).attr("y2", config.height);
+                .attr("x1", 300).attr("y1", 0)
+                .attr("x2", 300).attr("y2", config.height);
             borderLines.append("line")
-                .attr("x1", 350).attr("y1", 0)
-                .attr("x2", 350).attr("y2", config.height);
+                .attr("x1", 380).attr("y1", 0)
+                .attr("x2", 380).attr("y2", config.height);
 
             var borderLines = svg.append("g")
                 .attr("class", "border-lines")
             borderLines.append("line")
-                .attr("x1", 500).attr("y1", 0)
-                .attr("x2", 500).attr("y2", config.height);
+                .attr("x1", 550).attr("y1", 0)
+                .attr("x2", 550).attr("y2", config.height);
             borderLines.append("line")
-                .attr("x1", 600).attr("y1", 0)
-                .attr("x2", 600).attr("y2", config.height);
+                .attr("x1", 630).attr("y1", 0)
+                .attr("x2", 630).attr("y2", config.height);
             
             console.log(nestedByName)
             var slopeGroups = svg.append("g")
@@ -1298,11 +1298,11 @@
 
             var slopeLines = slopeGroups.append("line")
                 .attr("class", "slope-line")
-                .attr("x1", 250)
+                .attr("x1", 300)
                 .attr("y1", function(d) {
                     return y1Pos(d.values[0].HTPossession);
                 })
-                .attr("x2", 350)
+                .attr("x2", 380)
                 .attr("y2", function(d) {
                     return y1Pos(d.values[0].FTPossession);
                 })
@@ -1312,11 +1312,11 @@
 
             var slopeLines = slopeGroups.append("line")
                 .attr("class", "slope-line")
-                .attr("x1", 500)
+                .attr("x1", 550)
                 .attr("y1", function(d) {
                     return y1Foul(d.values[0].HTFoul);
                 })
-                .attr("x2", 600)
+                .attr("x2", 630)
                 .attr("y2", function(d) {
                     return y1Foul(d.values[0].FTFoul);
                 })
@@ -1330,12 +1330,12 @@
 
             var leftSlopeCircle = slopeGroups.append("circle")
                 .attr("r", config.radius)
-                .attr("cx", 250)
+                .attr("cx", 300)
                 .attr("cy", d => y1Pos(d.values[0].HTPossession));
 
             var leftSlopeCircle = slopeGroups.append("circle")
                 .attr("r", config.radius)
-                .attr("cx", 500)
+                .attr("cx", 550)
                 .attr("cy", d => y1Foul(d.values[0].HTFoul));
 
             var leftSlopeLabels = slopeGroups.append("g")
@@ -1365,7 +1365,7 @@
             var leftSlopeLabels = slopeGroups.append("g")
                 .attr("class", "slope-label-left")
                 .each(function(d) {
-                    d.xLeftPosition = 250 + config.labelGroupOffset;
+                    d.xLeftPosition = 300 + config.labelGroupOffset;
                     d.yLeftPosition = y1Pos(d.values[0].HTPossession);
                 });
 
@@ -1389,7 +1389,7 @@
             var leftSlopeLabels = slopeGroups.append("g")
                 .attr("class", "slope-label-left")
                 .each(function(d) {
-                    d.xLeftPosition = 500 + config.labelGroupOffset;
+                    d.xLeftPosition = 550 + config.labelGroupOffset;
                     d.yLeftPosition = y1Foul(d.values[0].HTFoul);
                 });
 
@@ -1412,13 +1412,13 @@
 
             var rightSlopeCircle = slopeGroups.append("circle")
                 .attr("r", config.radius)
-                .attr("cx", 100)
+                .attr("cx", 80)
                 .attr("cy", d => y1(d.values[0].FTShots));
 
             var rightSlopeLabels = slopeGroups.append("g")
                 .attr("class", "slope-label-right")
                 .each(function(d) {
-                    d.xRightPosition = 100 + config.labelGroupOffset;
+                    d.xRightPosition = 80 + config.labelGroupOffset;
                     d.yRightPosition = y1(d.values[0].FTShots);
                 });
 
@@ -1441,13 +1441,13 @@
 
             var rightSlopeCircle = slopeGroups.append("circle")
                 .attr("r", config.radius)
-                .attr("cx", 350 + config.width)
+                .attr("cx", 380 + config.width)
                 .attr("cy", d => y1Pos(d.values[0].FTPossession));
 
             var rightSlopeLabels = slopeGroups.append("g")
                 .attr("class", "slope-label-right")
                 .each(function(d) {
-                    d.xRightPosition = 350 + config.labelGroupOffset;
+                    d.xRightPosition = 380 + config.labelGroupOffset;
                     d.yRightPosition = y1Pos(d.values[0].FTPossession);
                 });
 
@@ -1470,13 +1470,13 @@
 
             var rightSlopeCircle = slopeGroups.append("circle")
                 .attr("r", config.radius)
-                .attr("cx", 600 + config.width)
+                .attr("cx", 630 + config.width)
                 .attr("cy", d => y1Foul(d.values[0].FTFoul));
 
             var rightSlopeLabels = slopeGroups.append("g")
                 .attr("class", "slope-label-right")
                 .each(function(d) {
-                    d.xRightPosition = 600 + config.labelGroupOffset;
+                    d.xRightPosition = 630 + config.labelGroupOffset;
                     d.yRightPosition = y1Foul(d.values[0].FTFoul);
                 });
 
@@ -1514,26 +1514,26 @@
 
             titles.append("text")
                 .attr("text-anchor", "end")
-                .attr("x", 250)
+                .attr("x", 300)
                 .attr("dx", -10)
                 .attr("dy", -margin.top / 2)
                 .text("Possesion before Comeback");
 
             titles.append("text")
-                .attr("x", 350)
+                .attr("x", 380)
                 .attr("dx", 10)
                 .attr("dy", -margin.top / 2)
                 .text("Possesion after Comeback");
 
             titles.append("text")
                 .attr("text-anchor", "end")
-                .attr("x", 500)
+                .attr("x", 550)
                 .attr("dx", -10)
                 .attr("dy", -margin.top / 2)
                 .text("Opponent Fouls before Comeback");
 
             titles.append("text")
-                .attr("x", 600)
+                .attr("x", 630)
                 .attr("dx", 10)
                 .attr("dy", -margin.top / 2)
                 .text("Opponent Fouls after Comeback");
