@@ -34,7 +34,7 @@
 		
         #comebackChart {
             height: 360px;
-            width: 41%;
+            width: 100%;
             margin: 0 auto;
             display: inline-block;
         }
@@ -176,7 +176,7 @@
 </head>
 
 <body>
-    <div style="text-align: center; font-size: 40px; font-style: italic; margin-bottom: 5px">Top Clubs and Comeback Kings of Europe</div>
+    <div style="text-align: center; font-size: 40px; font-style: italic; margin-bottom: 5px">Top Clubs and Their Claim to be Comeback Kings of Europe</div>
     <div class="fade_rule"></div>
 
     <div class="card">
@@ -184,11 +184,11 @@
         <div class="left_fade_rule"></div>
         From a fan's perspective, comebacks are one of the most exhilarating things in football. Who wouldn't love watching the team they support go from 0-2 down to win 3-2 with the last kick of the game? (The opponent maybe?). Even the players themselves get a rush from such a dramatic finish. The goal of this article is to determine which club in world football deserves the title of “Comeback Kings” and what statistics aid in this cause. Every club wants it, but surely only a few deserve the title.
     </div>
-
-    <div class="card" style="width: 52%; display: inline-block; vertical-align: top; margin-top: 15px;">
-        <span class="title">"Big" Clubs</span>
+    <div id="linechart"></div>
+    <div class="card" style="width: 55%; float: right; display: inline-block; vertical-align: top; margin-top: 15px; margin-bottom: 0px;">
+        <span class="title">"Top" Clubs</span>
         <div style='height: 2px;' class="left_fade_rule"></div>
-        Before we look into comebacks, let's determine the biggest clubs in football. We match up teams from the top 5 super leagues in Europe, all the way from the 1994-95 season. Hover over seasons to see which teams dominated different eras. Barcelona, Real Mardid, Manchester United, Bayern and Juventus make up the top 5 teams based on league wins across all these divisions. Pretty much expected, but there are still a few interesting stories here...
+        Before we look into comebacks, let's determine the biggest clubs in football. We match up teams from the top 5 super leagues in Europe, all the way from the 1994-95 season. Hover over seasons to see which teams dominated different eras. <b>Barcelona, Real Mardid, Manchester United, Bayern and Juventus make up the top 5 teams </b> based on league wins across all these divisions. Pretty much expected, but there are still a few interesting stories here...
         <div class="">
 
             <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -203,7 +203,7 @@
                 <div class="carousel-inner">
                     <div class="item active" style="text-align: center">
                         <div class="card" style="width: 95%; display: inline-block; vertical-align: top; margin-top: 15px;">
-                            <b>Roman Abramovich Era -</b> In 2003, Chelsea was bought over by Russian billionaire Roman Abramovich. Since then, over $2.5 billion was spent in transfer fees and player salaries resulting in 6 league titles. 
+                            <b>Roman Abramovich Era -</b> In 2003, Chelsea were bought over by Russian billionaire Roman Abramovich. Since then, over $2.5 billion was spent in fees and salaries resulting in 6 league titles. 
                         </div>
                     </div>
 
@@ -233,25 +233,27 @@
         </div>
     </div>
 
-    <div id="linechart"></div>
+    <div style="display: inline-block; width: 39%; vertical-align: top;">
     <div class="filter"> Filter for top <input step="5" id="topFilter" class="slider" value=10 type="range" min="1" max="227">
         <p>Value: <span id="filterValue"></span></p>
     </div>
-    <div style="width: 52%; display: inline-block; vertical-align: top; margin-top: 15px;">
-    <div class="card" style="display: inline-block; vertical-align: top; margin-top: 15px;">
+    <div id="comebackChart"></div>
+    </div>
+    <div style="display: inline-block;" id="slopeChart"></div>
+    <div class="card" style="display: inline-block; width: 40%; vertical-align: top; margin-top: 5px;">
         <span class="title">Comebacks with that winning mentality</span>
         <div style='height: 2px;' class="left_fade_rule"></div>
         Now that we got that out of the way, lets focus on the 10 biggest clubs. (Sorry fans of other clubs. Your teams just aren't big enough in history. Maybe soon?) Lets match them up based on the number of comebacks completed vs the number of wins over time. A comeback king is a team that customarily wins, but when faced with the rare obstacle of traling, digs down deep to grab that excusive comeback. They should stick out on the top right corner of the graph.
     </div>
-    <div class="card" style="display: inline-block; vertical-align: top; margin-top: 5px;">
+    <div class="card" style="display: inline-block; width: 55%; vertical-align: top; margin-top: 5px;">
         <span class="title">What causes comebacks? (Or what doesn't)</span>
         <div style='height: 2px;' class="left_fade_rule"></div>
         Analysing these teams, lets try and figure out why they achieve so many comebacks. Could it be change in possesion stats, attempting more shots on goal or opponents loosing their nerve and commiting more fouls. 
-        Fascinating to see that shots on goal amost doubled on average for all these teams during their comebacks. Most of these teams also draw alot more fouls during their comeback. This could be due to opponents not being able to handle the pressure. Most surprising is the fact that possession remains almost same before and after a comeback, meaning teams don't need to hold the ball longer to start their fightback.
+        Fascinating to see that <b>shots on goal almost doubled on average</b> for all these teams during their comebacks. Most of these teams also draw alot more fouls during their comeback. This could be due to opponents not being able to handle the pressure. Most surprising is the fact that <b>possession remains almost same</b> before and after a comeback, meaning teams don't need to hold the ball longer to start their fightback.
     
     </div>
-        </div>
-    <div id="comebackChart"></div>
+
+    
     <script>
         var slider = document.getElementById("topFilter");
         var output = document.getElementById("filterValue");
@@ -410,7 +412,7 @@
             });
             var xScale = d3.scaleBand()
                 .domain(seasons)
-                .range([40, 550]);
+                .range([40, 620]);
             xScale.invert = (function() {
                 var domain = xScale.domain()
                 var range = xScale.range()
@@ -426,7 +428,7 @@
             var yAxis = d3.axisLeft(yScale);
             var xAxisG = svg.append('g')
                 .attr('id', 'xAxisG')
-                .attr('transform', 'translate(-14,300)')
+                .attr('transform', 'translate(-12,300)')
                 .call(xAxis)
                 .selectAll("text")
                 .style("text-anchor", "end")
@@ -722,7 +724,7 @@
                         .duration(200)
                         .style("opacity", .9);
                     standingsDiv.html(createHTML(season))
-                        .style("left", (x + 800) + "px")
+                        .style("left", (d3.event.pageX) + "px")
                         .style("top", 400 + "px");
                 })
             //svg.on("mousemove", mousemove)
@@ -831,7 +833,7 @@
             //console.log(xMin, xMax, yMin, yMax)
             var xScale = d3.scaleLinear()
                 .domain([xMin, xMax])
-                .range([40, 650]);
+                .range([40, 600]);
             var yScale = d3.scaleLinear()
                 .domain([yMin, yMax])
                 .range([315, 30]);
@@ -842,7 +844,7 @@
             //console.log(seasons)
             var tScale = d3.scaleOrdinal()
                 .domain(seasons)
-                .range([40, 650])
+                .range([40, 600])
             tScale.invert = (function() {
                 var domain = tScale.domain()
                 var range = tScale.range()
@@ -1099,7 +1101,7 @@
         };
         var width = 1000 - margin.left - margin.right,
             height = 550 - margin.top - margin.bottom;
-        var svg = d3.select("body").append("svg")
+        var svg = d3.select("#slopeChart").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
