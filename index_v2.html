@@ -22,11 +22,11 @@
         
         body{
 			background: #ececec;
-			font-family: "Roboto-Light";
+			font-family: "Roboto-Thin";
         }
         
         #linechart {
-            height: 380px;
+            height: 300px;
             width: 41%;
             margin: 0 auto;
             margin-top: 15px;
@@ -34,7 +34,7 @@
         }
 		
         #comebackChart {
-            height: 360px;
+            height: 300px;
             width: 100%;
             margin: 0 auto;
             display: inline-block;
@@ -105,17 +105,17 @@
 			background-image: -webkit-gradient( linear, left bottom, right bottom, color-stop(0.02, #525252), color-stop(0.5, #c7c7c7), color-stop(0.98, white) );
         }
         .card{
-            padding: 20px;
-            margin: 20px;
+            padding: 18px;
+            margin: 10px;
             border-radius: 8px;
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.3), 0 6px 20px 0 rgba(0, 0, 0, 0.29);
             background: white;
-            font-size: 18px;
             text-align: justify;
+            font-family: "Roboto-Light";
         }
         
         .title{
-            font-size: 26px;
+            font-size: 24px;
             margin-bottom: 10px;
             font-style: italic;
         }
@@ -150,7 +150,8 @@
         .slider {
 			-webkit-appearance: none;
 			width: 100%;
-			height: 25px;
+			height: 5px;
+            margin: 5px 0;
 			background: #d3d3d3;
 			outline: none;
 			opacity: 0.7;
@@ -165,15 +166,15 @@
 		.slider::-webkit-slider-thumb {
 			-webkit-appearance: none;
 			appearance: none;
-			width: 25px;
-			height: 25px;
+			width: 15px;
+			height: 15px;
 			background: #4CAF50;
 			cursor: pointer;
 		}
 
 		.slider::-moz-range-thumb {
-			width: 25px;
-			height: 25px;
+			width: 15px;
+			height: 15px;
 			background: #4CAF50;
 			cursor: pointer;
 		}
@@ -185,7 +186,7 @@
 </head>
 
 <body>
-    <div style="text-align: center; font-size: 40px; font-style: italic; margin-bottom: 5px">Top Clubs and Their Claim to be Comeback Kings of Europe</div>
+    <div style="text-align: center; font-size: 30px; font-style: italic; margin-bottom: 5px; font-family: Roboto-Light;">Top Clubs and Their Claim to be Comeback Kings of Europe</div>
     <div class="fade_rule"></div>
 
     <div class="card">
@@ -194,9 +195,9 @@
         From a fan's perspective, comebacks are one of the most exhilarating things in football. Who wouldn't love watching the team they support go from 0-2 down to win 3-2 with the last kick of the game? (The opponent maybe?). Even the players themselves get a rush from such a dramatic finish. The goal of this article is to determine which club in world football deserves the title of “Comeback Kings” and what statistics aid in this cause. Every club wants it, but surely only a few deserve the title.
     </div>
     <div id="linechart"></div>
-    <div class="card" style="width: 55%; float: right; display: inline-block; vertical-align: top; margin-top: 15px; margin-bottom: 0px;">
+    <div class="card" style="width: 56%; float: right; display: inline-block; vertical-align: top; margin-top: 15px; margin-bottom: 0px;">
         <span class="title">"Top" Clubs</span>
-        <div style='height: 2px;' class="left_fade_rule"></div>
+        <div class="left_fade_rule"></div>
         Before we look into comebacks, let's determine the biggest clubs in football. We match up teams from the top 5 super leagues in Europe, all the way from the 1994-95 season. Hover over seasons to see which teams dominated different eras. <b>Barcelona, Real Mardid, Manchester United, Bayern and Juventus make up the top 5 teams </b> based on league wins across all these divisions. Pretty much expected, but there are still a few interesting stories here...
         <div class="">
 
@@ -242,25 +243,25 @@
         </div>
     </div>
 
-    <div style="display: inline-block; width: 39%; vertical-align: top;">
-        <div class="filter"> Filter for top <input step="5" id="topFilter" class="slider" value=10 type="range" min="1" max="227">
+    <div style="display: inline-block; width: 40%; vertical-align: top;">
+        <div style="font-family: Roboto-Light; font-size: 12px" class="filter"> Teams to display <input step="5" id="topFilter" class="slider" value=10 type="range" min="1" max="227">
             <p>Value: <span id="filterValue"></span></p>
         </div>
         <div id="comebackChart"></div>
-        <h4 style="font-style: italic; text-align: center;">Hover over a teams node to highlight their performance and stats</h4>
+        <h4 style="font-style: italic; text-align: center; font-family: Roboto-Light;">Hover over a teams node to highlight their performance and stats</h4>
     </div>
     <div style="display: inline-block;" id="slopeChart"></div>
     <div class="card" style="display: inline-block; width: 40%; vertical-align: top; margin-top: 5px;">
         <span class="title">Comebacks with that winning mentality</span>
-        <div style='height: 2px;' class="left_fade_rule"></div>
+        <div class="left_fade_rule"></div>
         Now that we got that out of the way, lets focus on the 10 biggest clubs. (Sorry fans of other clubs. Your teams just aren't big enough in history. Maybe soon?) Lets match them up based on the number of comebacks completed vs the number of wins over time. A comeback king is a team that customarily wins, but when faced with the rare obstacle of traling, digs down deep to grab that excusive comeback. They should stick out on the top right corner of the graph.
         <p style="font-style: italic"><b>Conclusion - Only Real Madrid and Manchester United have a valid claim to be called the True Comeback Kings of Football. </b> </p>
     </div>
     <div class="card" style="display: inline-block; width: 55%; vertical-align: top; margin-top: 5px;">
         <span class="title">What causes comebacks? (Or what doesn't)</span>
-        <div style='height: 2px;' class="left_fade_rule"></div>
+        <div class="left_fade_rule"></div>
         Analysing these teams, lets try and figure out why they achieve so many comebacks. Could it be change in possesion stats, attempting more shots on goal or opponents loosing their nerve and commiting more fouls.
-        Fascinating to see that <b>shots on goal almost doubled on average</b> for all these teams during their comebacks. Most of these teams also draw alot more fouls during their comeback. This could be due to opponents not being able to handle the pressure. Most surprising is the fact that <b>possession remains almost same</b> before and after a comeback, meaning teams don't need to hold the ball longer to start their fightback.
+        Fascinating to see that <b>shots on goal almost doubled on average</b> for all these teams during their comebacks. Most of these teams also draw alot more fouls during their comeback. This could be due to opponents not being able to handle the pressure of maintaining the lead. Most surprising is the fact that <b>possession remains almost same</b> before and after a comeback, meaning teams don't need to hold on to the ball longer to start their fightback.
 
     </div>
 
@@ -398,13 +399,13 @@
                 d3.json("dataBank.json", function(data) {
                     dataBank = data
                     d3.json("teamTotals.json", function(data) {
-                    teamTotals = data
-                    console.log(dataSet)
-                    console.log(dataBank)
-                    seasons = Object.keys(dataBank)
-                    drawGraph()
-                    drawComebackGraph()
-                });
+                        teamTotals = data
+                        console.log(dataSet)
+                        console.log(dataBank)
+                        seasons = Object.keys(dataBank)
+                        drawGraph()
+                        drawComebackGraph()
+                    });
                 });
             });
         }
@@ -466,7 +467,7 @@
             });
             var xScale = d3.scaleBand()
                 .domain(seasons)
-                .range([40, 620]);
+                .range([40, 550]);
             xScale.invert = (function() {
                 var domain = xScale.domain()
                 var range = xScale.range()
@@ -477,12 +478,12 @@
             })()
             var yScale = d3.scaleLinear()
                 .domain([yMin, yMax])
-                .range([300, 2]);
+                .range([230, 2]);
             var xAxis = d3.axisBottom(xScale);
             var yAxis = d3.axisLeft(yScale);
             var xAxisG = svg.append('g')
                 .attr('id', 'xAxisG')
-                .attr('transform', 'translate(-12,300)')
+                .attr('transform', 'translate(-10,230)')
                 .call(xAxis)
                 .selectAll("text")
                 .style("text-anchor", "end")
@@ -494,14 +495,14 @@
                 .attr('transform', 'translate(40,0)')
                 .call(yAxis);
             svg.append("text")
-                .attr('transform', 'translate(300,370)')
+                .attr('transform', 'translate(270,300)')
                 .style("text-anchor", "middle")
-                .style("font-size", "13px")
+                .style("font-size", "10px")
                 .text("Seasons");
             svg.append("text")
-                .attr('transform', 'translate(11,150)rotate(-90)')
+                .attr('transform', 'translate(11,110)rotate(-90)')
                 .style("text-anchor", "middle")
-                .style("font-size", "13px")
+                .style("font-size", "10px")
                 .text("Total Number of Wins");
 
             var color = {
@@ -623,7 +624,7 @@
                     d3.selectAll('.highLightSvg')
                         .transition()
                         .duration(1000)
-                        .attr("r", 40)
+                        .attr("r", 35)
                         .attr('opacity', '1')
                         .attr("cx", function(d, i) {
                             return xScale("2005-2006")
@@ -654,7 +655,7 @@
                     d3.selectAll('.highLightSvg')
                         .transition()
                         .duration(1000)
-                        .attr("r", 40)
+                        .attr("r", 35)
                         .attr('opacity', '1')
                         .attr("cx", function(d, i) {
                             return xScale("2003-2004")
@@ -685,7 +686,7 @@
                     d3.selectAll('.highLightSvg')
                         .transition()
                         .duration(1000)
-                        .attr("r", 40)
+                        .attr("r", 35)
                         .attr('opacity', '1')
                         .attr("cx", function(d, i) {
                             return xScale("2015-2016")
@@ -737,7 +738,7 @@
                 .style("stroke-width", "1px")
                 .style('stroke-dasharray', '3 3')
                 .style("opacity", "0");
-            var height = 450
+            var height = 250
             var width = 550
             mouseG.append('svg:rect') // append a rect to catch mouse movements on canvas
                 .attr('width', width) // can't catch mouse events on a g element
@@ -776,9 +777,9 @@
                         .duration(200)
                         .style("opacity", .9);
                     standingsDiv.html(createHTML(season))
-                        .style("font-size", "13px")
+                        .style("font-size", "11px")
                         .style("left", (d3.event.pageX) + "px")
-                        .style("top", 400 + "px");
+                        .style("top", 300 + "px");
                 })
             //svg.on("mousemove", mousemove)
             var zoom = d3.zoom()
@@ -885,18 +886,18 @@
             });
             var xScale = d3.scaleLinear()
                 .domain([xMin, xMax])
-                .range([40, 600]);
+                .range([40, 500]);
             var yScale = d3.scaleLinear()
                 .domain([yMin, yMax])
-                .range([315, 30]);
-        
+                .range([255, 30]);
+
             var mScale = d3.scaleLinear()
                 .domain([mMin, mMax])
                 .range([2, 80]);
-            
+
             var tScale = d3.scaleOrdinal()
                 .domain(seasons)
-                .range([40, 600])
+                .range([40, 500])
             tScale.invert = (function() {
                 var domain = tScale.domain()
                 var range = tScale.range()
@@ -909,7 +910,7 @@
             var yAxis = d3.axisLeft(yScale);
             var xAxisG = comebackSvg.append('g')
                 .attr('id', 'xAxisG')
-                .attr('transform', 'translate(0,315)') //???
+                .attr('transform', 'translate(0,255)') //???
                 .call(xAxis);
             var yAxisG = comebackSvg.append('g')
                 .attr('id', 'yAxisG')
@@ -917,14 +918,14 @@
                 .call(yAxis);
 
             comebackSvg.append("text")
-                .attr('transform', 'translate(300,350)')
+                .attr('transform', 'translate(280,300)')
                 .style("text-anchor", "middle")
-                .style("font-size", "13px")
+                .style("font-size", "11px")
                 .text("Total Number of Wins");
             comebackSvg.append("text")
-                .attr('transform', 'translate(15,150)rotate(-90)')
+                .attr('transform', 'translate(15,140)rotate(-90)')
                 .style("text-anchor", "middle")
-                .style("font-size", "13px")
+                .style("font-size", "11px")
                 .text("Number of Matches");
             var color = {
                 'Liverpool': '#ff7f0e',
@@ -971,7 +972,7 @@
             var paths = {};
             var index = Object.keys(dataSet[0]).length - 1;
             var lastRow = dataSet[dataSet.length - 1]
-            
+
             var colorCircle = 0
             for (key in lastRow) {
                 if (key !== 'season') {
@@ -1054,7 +1055,7 @@
                 var x = d3.mouse(this)[0];
                 var team = d3.select(this).attr('title')
                 var season = tScale.invert(d3.mouse(this)[0])
-                
+
                 div.transition()
                     .duration(200)
                     .style("opacity", .9);
@@ -1088,7 +1089,7 @@
                 d3.select(this).style('opacity', '1')
                 var team = d3.select(this).attr('title')
                 var id = d3.select(this).attr('id')
-                
+
                 d3.selectAll('#' + id).style('opacity', '1')
                 div.transition()
                     .duration(200)
@@ -1146,13 +1147,13 @@
 
         //slope graph
         var margin = {
-            top: 100,
+            top: 40,
             right: 850,
             bottom: 40,
             left: 850
         };
-        var width = 1000 - margin.left - margin.right,
-            height = 550 - margin.top - margin.bottom;
+        var width = 800 - margin.left - margin.right,
+            height = 400 - margin.top - margin.bottom;
         var svg = d3.select("#slopeChart").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
@@ -1317,7 +1318,7 @@
                 .attr("x1", 630).attr("y1", 0)
                 .attr("x2", 630).attr("y2", config.height);
 
-            
+
             var slopeGroups = svg.append("g")
                 .selectAll("g")
                 .data(nestedByName)
@@ -1416,6 +1417,8 @@
                 .attr("y", d => d.yLeftPosition)
                 .attr("dx", -config.labelKeyOffset)
                 .attr("dy", 3)
+                //.attr("id", d => d.key.replace(/^[^a-z]+|[^\w:.-]+/gi, ""))
+                .style("opacity", 0)
                 .attr("text-anchor", "end")
                 .text(d => d.key);
 
@@ -1441,6 +1444,8 @@
                 .attr("dx", -config.labelKeyOffset)
                 .attr("dy", 3)
                 .attr("text-anchor", "end")
+                //.attr("id", d => d.key.replace(/^[^a-z]+|[^\w:.-]+/gi, ""))
+                .style("opacity", 0)
                 .text(d => d.key)
 
             var leftSlopeLabels = slopeGroups.append("g")
@@ -1465,6 +1470,8 @@
                 .attr("dx", -config.labelKeyOffset)
                 .attr("dy", 3)
                 .attr("text-anchor", "end")
+                //.attr("id", d => d.key.replace(/^[^a-z]+|[^\w:.-]+/gi, ""))
+                .style("opacity", 0)
                 .text(d => d.key)
 
             var rightSlopeCircle = slopeGroups.append("circle")
@@ -1494,6 +1501,8 @@
                 .attr("dx", config.labelKeyOffset)
                 .attr("dy", 3)
                 .attr("text-anchor", "start")
+                //.attr("id", d => d.key.replace(/^[^a-z]+|[^\w:.-]+/gi, ""))
+                .style("opacity", 0)
                 .text(d => d.key);
 
             var rightSlopeCircle = slopeGroups.append("circle")
@@ -1523,6 +1532,8 @@
                 .attr("dx", config.labelKeyOffset)
                 .attr("dy", 3)
                 .attr("text-anchor", "start")
+                //.attr("id", d => d.key.replace(/^[^a-z]+|[^\w:.-]+/gi, ""))
+                .style("opacity", 0)
                 .text(d => d.key);
 
             var rightSlopeCircle = slopeGroups.append("circle")
@@ -1552,6 +1563,8 @@
                 .attr("dx", config.labelKeyOffset)
                 .attr("dy", 3)
                 .attr("text-anchor", "start")
+                //.attr("id", d => d.key.replace(/^[^a-z]+|[^\w:.-]+/gi, ""))
+                .style("opacity", 0)
                 .text(d => d.key);
 
             var titles = svg.append("g")
@@ -1560,39 +1573,39 @@
             titles.append("text")
                 .attr("text-anchor", "end")
                 .attr("dx", -10)
-                .attr("dy", -margin.top / 2)
+                .attr("dy", -margin.top / 4)
                 .text("");
 
             titles.append("text")
                 .attr("x", -30)
                 .attr("dx", 10)
-                .attr("dy", -margin.top / 2)
+                .attr("dy", -margin.top / 4)
                 .text("Shots Before & After Comeback");
 
             titles.append("text")
                 .attr("text-anchor", "end")
                 .attr("x", 300)
                 .attr("dx", -10)
-                .attr("dy", -margin.top / 2)
+                .attr("dy", -margin.top / 4)
                 .text("");
 
             titles.append("text")
                 .attr("x", 250)
                 .attr("dx", 10)
-                .attr("dy", -margin.top / 2)
+                .attr("dy", -margin.top / 4)
                 .text("Possesion Before & After Comeback");
 
             titles.append("text")
                 .attr("text-anchor", "end")
                 .attr("x", 550)
                 .attr("dx", -10)
-                .attr("dy", -margin.top / 2)
+                .attr("dy", -margin.top / 4)
                 .text("");
 
             titles.append("text")
                 .attr("x", 500)
                 .attr("dx", 10)
-                .attr("dy", -margin.top / 2)
+                .attr("dy", -margin.top / 4)
                 .text("Opponent Fouls Before & After Comeback");
 
             relax(leftSlopeLabels, "yLeftPosition");
