@@ -16,4 +16,4 @@ We then analyze a few possible statistics to try and establish why these clubs a
 ## More
 [DEMO](https://nyu-vis-fall2018.github.io/storytelling-group-14/)
 
-[Project Description](project.pdf)
+[Project Description](https://github.com/NYU-VIS-FALL2018/storytelling-group-14/blob/master/Project.pdf)
