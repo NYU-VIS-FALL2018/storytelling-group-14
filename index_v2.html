@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
     <style>
         @font-face {
 			font-family: "Roboto-Thin";
@@ -50,6 +51,14 @@
         }
         .legend-text {
             font-size: 11px;
+        }
+        
+        .square {
+          height: 8px;
+          width: 8px;
+          display: inline-block;
+          vertical-align: baseline;
+          margin-right: 3px;
         }
 		
         .filter {
@@ -203,7 +212,7 @@
                 <div class="carousel-inner">
                     <div class="item active" style="text-align: center">
                         <div class="card" style="width: 95%; display: inline-block; vertical-align: top; margin-top: 15px;">
-                            <b>Roman Abramovich Era -</b> In 2003, Chelsea were bought over by Russian billionaire Roman Abramovich. Since then, over $2.5 billion was spent in fees and salaries resulting in 6 league titles. 
+                            <b>Roman Abramovich Era -</b> In 2003, Chelsea were bought over by Russian billionaire Roman Abramovich. Since then, over $2.5 billion was spent in fees and salaries resulting in 6 league titles.
                         </div>
                     </div>
 
@@ -215,7 +224,7 @@
 
                     <div class="item" style="text-align: center">
                         <div class="card" style="width: 95%; display: inline-block; vertical-align: top; margin-top: 15px;">
-                            <b>Post Sir Alex Ferguson Era -</b> In 2013, the most successful manager in English football retired from managing the most successful club in English football. Since then, Manchester United's win % has fallen to 60% from 67%. 
+                            <b>Post Sir Alex Ferguson Era -</b> In 2013, the most successful manager in English football retired from managing the most successful club in English football. Since then, Manchester United's win % has fallen to 60% from 67%.
                         </div>
                     </div>
                 </div>
@@ -234,26 +243,28 @@
     </div>
 
     <div style="display: inline-block; width: 39%; vertical-align: top;">
-    <div class="filter"> Filter for top <input step="5" id="topFilter" class="slider" value=10 type="range" min="1" max="227">
-        <p>Value: <span id="filterValue"></span></p>
-    </div>
-    <div id="comebackChart"></div>
+        <div class="filter"> Filter for top <input step="5" id="topFilter" class="slider" value=10 type="range" min="1" max="227">
+            <p>Value: <span id="filterValue"></span></p>
+        </div>
+        <div id="comebackChart"></div>
+        <h4 style="font-style: italic; text-align: center;">Hover over a teams node to highlight their performance and stats</h4>
     </div>
     <div style="display: inline-block;" id="slopeChart"></div>
     <div class="card" style="display: inline-block; width: 40%; vertical-align: top; margin-top: 5px;">
         <span class="title">Comebacks with that winning mentality</span>
         <div style='height: 2px;' class="left_fade_rule"></div>
         Now that we got that out of the way, lets focus on the 10 biggest clubs. (Sorry fans of other clubs. Your teams just aren't big enough in history. Maybe soon?) Lets match them up based on the number of comebacks completed vs the number of wins over time. A comeback king is a team that customarily wins, but when faced with the rare obstacle of traling, digs down deep to grab that excusive comeback. They should stick out on the top right corner of the graph.
+        <p style="font-style: italic"><b>Conclusion - Only Real Madrid and Manchester United have a valid claim to be called the True Comeback Kings of Football. </b> </p>
     </div>
     <div class="card" style="display: inline-block; width: 55%; vertical-align: top; margin-top: 5px;">
         <span class="title">What causes comebacks? (Or what doesn't)</span>
         <div style='height: 2px;' class="left_fade_rule"></div>
-        Analysing these teams, lets try and figure out why they achieve so many comebacks. Could it be change in possesion stats, attempting more shots on goal or opponents loosing their nerve and commiting more fouls. 
+        Analysing these teams, lets try and figure out why they achieve so many comebacks. Could it be change in possesion stats, attempting more shots on goal or opponents loosing their nerve and commiting more fouls.
         Fascinating to see that <b>shots on goal almost doubled on average</b> for all these teams during their comebacks. Most of these teams also draw alot more fouls during their comeback. This could be due to opponents not being able to handle the pressure. Most surprising is the fact that <b>possession remains almost same</b> before and after a comeback, meaning teams don't need to hold the ball longer to start their fightback.
-    
+
     </div>
 
-    
+
     <script>
         var slider = document.getElementById("topFilter");
         var output = document.getElementById("filterValue");
@@ -264,6 +275,12 @@
 
     </script>
     <script>
+        function saveText(text, filename) {
+            var a = document.createElement('a');
+            a.setAttribute('href', 'data:text/plain;charset=utf-u,' + encodeURIComponent(text));
+            a.setAttribute('download', filename);
+            a.click()
+        }
         let dataBank = {}
         let bymonth = {}
         let dataSet = []
@@ -359,7 +376,6 @@
                 var dateKeys = Object.keys(dataBank)
                 seasons = dateKeys
                 for (var j = 0; j < dateKeys.length; j++) {
-                    //console.log(parseDate(dateKeys[j]))
                     var json = {
                         "season": dateKeys[j]
                     }
@@ -368,13 +384,32 @@
                     var mergedJson = Object.assign(json, dataBank[dateKeys[j]]);
                     dataSet.push(mergedJson)
                 }
-                //console.log(dataSet)
+                console.log(dataSet)
+                console.log(dataBank)
                 drawGraph()
                 drawComebackGraph()
                 createHTML("2005-2006")
             });
         }
-        loadData2()
+
+        function loadProcessedData() {
+            d3.json("dataSet.json", function(data) {
+                dataSet = data
+                d3.json("dataBank.json", function(data) {
+                    dataBank = data
+                    d3.json("teamTotals.json", function(data) {
+                    teamTotals = data
+                    console.log(dataSet)
+                    console.log(dataBank)
+                    seasons = Object.keys(dataBank)
+                    drawGraph()
+                    drawComebackGraph()
+                });
+                });
+            });
+        }
+        //loadData2()
+        loadProcessedData()
         //var top10Teams = ["Real Madrid", "Barcelona", "Man United", "Bayern Munich", 'Juventus', 'Arsenal', 'Chelsea', 'Inter', 'Lyon', 'Liverpool']
         function getTopSet(year) {
             return Object.keys(dataBank[year]).sort(function(a, b) {
@@ -382,12 +417,31 @@
             })
         }
 
+        var color = {
+            'Liverpool': '#ff7f0e',
+            'Man United': '#d62728',
+            'Arsenal': '#9467bd',
+            'Barcelona': '#e377c2',
+            'Real Madrid': '#8c564b',
+            'Inter': '#bcbd22',
+            'Lyon': '#1b1a1a',
+            'Juventus': '#2ca02c',
+            'Chelsea': '#1f77b4',
+            'Bayern Munich': '#17becf'
+        }
+
         function createHTML(year) {
             var top10Teams = getTopSet(year)
-            var html = "Season " + year
+            var html = "<b>Season " + year + "</b>"
+            var col = ''
             for (var i = 0; i < 10; i++) {
                 //htmlValues.push(dataBank[year][top10Teams[i]][0])
-                html = html + "<br> " + top10Teams[i] + ": " + dataBank[year][top10Teams[i]][0]
+                if (top10Teams[i] in color) {
+                    col = color[top10Teams[i]]
+                } else {
+                    col = '#c5c4c4'
+                }
+                html = html + "<br> <div style='background-color: " + col + "' class='square'></div>" + top10Teams[i] + ": " + dataBank[year][top10Teams[i]][0]
             }
             return html
         }
@@ -442,25 +496,25 @@
             svg.append("text")
                 .attr('transform', 'translate(300,370)')
                 .style("text-anchor", "middle")
-                .style("font-weight", "bold")
-                .text("Span of Years");
+                .style("font-size", "13px")
+                .text("Seasons");
             svg.append("text")
-                .attr('transform', 'translate(10,150)rotate(-90)')
+                .attr('transform', 'translate(11,150)rotate(-90)')
                 .style("text-anchor", "middle")
-                .style("font-weight", "bold")
+                .style("font-size", "13px")
                 .text("Total Number of Wins");
 
             var color = {
-                'Liverpool': '#4d4d4d',
-                'Man United': '#5da5da',
-                'Arsenal': '#faa43a',
-                'Barcelona': '#60bd68',
-                'Real Madrid': '#f17cb0',
-                'Inter': '#b2912f',
-                'Lyon': '#b276b2',
-                'Juventus': '#decf3f',
-                'Chelsea': '#f15854',
-                'Bayern Munich': '#1f77b4'
+                'Liverpool': '#ff7f0e',
+                'Man United': '#d62728',
+                'Arsenal': '#9467bd',
+                'Barcelona': '#e377c2',
+                'Real Madrid': '#8c564b',
+                'Inter': '#bcbd22',
+                'Lyon': '#1b1a1a',
+                'Juventus': '#2ca02c',
+                'Chelsea': '#1f77b4',
+                'Bayern Munich': '#17becf'
             }
             var linesG = svg.append('g');
             var legend = svg.append('g')
@@ -519,7 +573,11 @@
                             //.on("mousemove", mousemove)
                             .attr('stroke', function(d) {
                                 colorline += 1;
-                                return color[key];
+                                if (key in color) {
+                                    return color[key];
+                                } else {
+                                    return '#c5c4c4'
+                                }
                             })
                             .attr('stroke-width', 1);
                         var totalLength = path.node().getTotalLength();
@@ -547,16 +605,14 @@
                 })
                 .attr("r", 1)
                 .attr("opacity", 1)
-            
+
             $("#myCarousel").on('slide.bs.carousel', function() {
-                var currSlide = $('div.active').index()+1
-                console.log(currSlide)
+                var currSlide = $('div.active').index() + 1
                 highlight(currSlide)
             });
 
             function highlight(ind) {
                 if (ind == 1) {
-                    console.log("in")
                     for (k in teamTotals) {
                         kId = k.replace(/^[^a-z]+|[^\w:.-]+/gi, "")
                         d3.select('#' + kId).style('opacity', '0.25')
@@ -584,12 +640,10 @@
                             d3.selectAll('.highLightSvg')
                                 .transition()
                                 .duration(2000)
-                                .attr("r", 25)    
+                                .attr("r", 25)
                         })
 
-                }
-                else if (ind == 3) {
-                    console.log("in")
+                } else if (ind == 3) {
                     for (k in teamTotals) {
                         kId = k.replace(/^[^a-z]+|[^\w:.-]+/gi, "")
                         d3.select('#' + kId).style('opacity', '0.25')
@@ -617,12 +671,10 @@
                             d3.selectAll('.highLightSvg')
                                 .transition()
                                 .duration(2000)
-                                .attr("r", 25)    
+                                .attr("r", 25)
                         })
 
-                }
-                else if (ind == 2) {
-                    console.log("in")
+                } else if (ind == 2) {
                     for (k in teamTotals) {
                         kId = k.replace(/^[^a-z]+|[^\w:.-]+/gi, "")
                         d3.select('#' + kId).style('opacity', '0.25')
@@ -650,7 +702,7 @@
                             d3.selectAll('.highLightSvg')
                                 .transition()
                                 .duration(2000)
-                                .attr("r", 25)    
+                                .attr("r", 25)
                         })
 
                 }
@@ -724,6 +776,7 @@
                         .duration(200)
                         .style("opacity", .9);
                     standingsDiv.html(createHTML(season))
+                        .style("font-size", "13px")
                         .style("left", (d3.event.pageX) + "px")
                         .style("top", 400 + "px");
                 })
@@ -830,18 +883,17 @@
             var mMax = d3.max(marginValues, function(d, i) {
                 return d;
             });
-            //console.log(xMin, xMax, yMin, yMax)
             var xScale = d3.scaleLinear()
                 .domain([xMin, xMax])
                 .range([40, 600]);
             var yScale = d3.scaleLinear()
                 .domain([yMin, yMax])
                 .range([315, 30]);
-            //console.log(mMin, mMax)
+        
             var mScale = d3.scaleLinear()
                 .domain([mMin, mMax])
                 .range([2, 80]);
-            //console.log(seasons)
+            
             var tScale = d3.scaleOrdinal()
                 .domain(seasons)
                 .range([40, 600])
@@ -867,24 +919,24 @@
             comebackSvg.append("text")
                 .attr('transform', 'translate(300,350)')
                 .style("text-anchor", "middle")
-                .style("font-weight", "bold")
+                .style("font-size", "13px")
                 .text("Total Number of Wins");
             comebackSvg.append("text")
-                .attr('transform', 'translate(10,150)rotate(-90)')
+                .attr('transform', 'translate(15,150)rotate(-90)')
                 .style("text-anchor", "middle")
-                .style("font-weight", "bold")
+                .style("font-size", "13px")
                 .text("Number of Matches");
             var color = {
-                'Liverpool': '#4d4d4d',
-                'Man United': '#5da5da',
-                'Arsenal': '#faa43a',
-                'Barcelona': '#60bd68',
-                'Real Madrid': '#f17cb0',
-                'Inter': '#b2912f',
-                'Lyon': '#b276b2',
-                'Juventus': '#decf3f',
-                'Chelsea': '#f15854',
-                'Bayern Munich': '#1f77b4'
+                'Liverpool': '#ff7f0e',
+                'Man United': '#d62728',
+                'Arsenal': '#9467bd',
+                'Barcelona': '#e377c2',
+                'Real Madrid': '#8c564b',
+                'Inter': '#bcbd22',
+                'Lyon': '#1b1a1a',
+                'Juventus': '#2ca02c',
+                'Chelsea': '#1f77b4',
+                'Bayern Munich': '#17becf'
             }
             var linesG = comebackSvg.append('g');
             var legend = comebackSvg.append('g')
@@ -919,7 +971,7 @@
             var paths = {};
             var index = Object.keys(dataSet[0]).length - 1;
             var lastRow = dataSet[dataSet.length - 1]
-            //console.log(lastRow)
+            
             var colorCircle = 0
             for (key in lastRow) {
                 if (key !== 'season') {
@@ -1002,7 +1054,7 @@
                 var x = d3.mouse(this)[0];
                 var team = d3.select(this).attr('title')
                 var season = tScale.invert(d3.mouse(this)[0])
-                console.log(season)
+                
                 div.transition()
                     .duration(200)
                     .style("opacity", .9);
@@ -1025,7 +1077,7 @@
 
             function mouseover() {
                 $("#myCarousel").carousel("pause");
-                d3.selectAll(".highLightSvg").transition().duration(200).attr("opacity",0)
+                d3.selectAll(".highLightSvg").transition().duration(200).attr("opacity", 0)
                 for (k in teamTotals) {
                     kId = k.replace(/^[^a-z]+|[^\w:.-]+/gi, "")
                     d3.selectAll('#' + kId).style('opacity', '0.25')
@@ -1036,7 +1088,7 @@
                 d3.select(this).style('opacity', '1')
                 var team = d3.select(this).attr('title')
                 var id = d3.select(this).attr('id')
-                console.log(id)
+                
                 d3.selectAll('#' + id).style('opacity', '1')
                 div.transition()
                     .duration(200)
@@ -1155,16 +1207,16 @@
                 }
             }
             var color = {
-                'Liverpool': '#4d4d4d',
-                'Man Utd': '#5da5da',
-                'Arsenal': '#faa43a',
-                'Barcelona': '#60bd68',
-                'Real Madrid': '#f17cb0',
-                'Inter': '#b2912f',
-                'Lyon': '#b276b2',
-                'Juventus': '#decf3f',
-                'Chelsea': '#f15854',
-                'Bayern': '#1f77b4'
+                'Liverpool': '#ff7f0e',
+                'Man Utd': '#d62728',
+                'Arsenal': '#9467bd',
+                'Barcelona': '#e377c2',
+                'Real Madrid': '#8c564b',
+                'Inter': '#bcbd22',
+                'Lyon': '#1b1a1a',
+                'Juventus': '#2ca02c',
+                'Chelsea': '#1f77b4',
+                'Bayern': '#17becf'
             }
             // Combine ratios into a single array
             var i = 0
@@ -1264,8 +1316,8 @@
             borderLines.append("line")
                 .attr("x1", 630).attr("y1", 0)
                 .attr("x2", 630).attr("y2", config.height);
+
             
-            console.log(nestedByName)
             var slopeGroups = svg.append("g")
                 .selectAll("g")
                 .data(nestedByName)
@@ -1273,14 +1325,17 @@
                 .attr("class", "slope-group")
                 //.attr("id", d.key);
                 .attr("id", function(d, i) {
-                    console.log(d)
-                    console.log(i)
                     d.id = "group" + i;
                     d.values[0].group = this;
-                    console.log(d.values[0])
-		    if (d.values[0].name === "Man Utd"){return "ManUnited"}
-		    if (d.values[0].name === "Bayern"){return "BayernMunich"}
-		    if (d.values[0].name === "Real Madrid"){return "RealMadrid"}
+                    if (d.values[0].name === "Man Utd") {
+                        return "ManUnited"
+                    }
+                    if (d.values[0].name === "Bayern") {
+                        return "BayernMunich"
+                    }
+                    if (d.values[0].name === "Real Madrid") {
+                        return "RealMadrid"
+                    }
                     return d.values[0].name
                 });
 
@@ -1525,7 +1580,7 @@
                 .attr("x", 250)
                 .attr("dx", 10)
                 .attr("dy", -margin.top / 2)
-                .text("Possesion Befor & After Comeback");
+                .text("Possesion Before & After Comeback");
 
             titles.append("text")
                 .attr("text-anchor", "end")
@@ -1590,14 +1645,11 @@
 
 
         function mouseover(d) {
-            //console.log(d.data.group.id)
-	    //id = d.data.group.id
-	    d3.selectAll(".slope-group")
+            //id = d.data.group.id
+            d3.selectAll(".slope-group")
                 .attr("opacity", 0.1);
             d3.select(d.data.group).attr("opacity", 1);
-	    //var id = d3.select(this).attr('id')
-            //console.log(id)
-	    
+            //var id = d3.select(this).attr('id')
             //d3.selectAll('#' + id).style('opacity', '1')
         }
 
