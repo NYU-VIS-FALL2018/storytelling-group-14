@@ -194,6 +194,7 @@
         <div class="left_fade_rule"></div>
         From a fan's perspective, comebacks are one of the most exhilarating things in football. Who wouldn't love watching the team they support go from 0-2 down to win 3-2 with the last kick of the game? (The opponent maybe?). Even the players themselves get a rush from such a dramatic finish. The goal of this article is to determine which club in world football deserves the title of “Comeback Kings” and what statistics aid in this cause. Every club wants it, but surely only a few deserve the title.
     </div>
+    <div>
     <div id="linechart"></div>
     <div class="card" style="width: 56%; float: right; display: inline-block; vertical-align: top; margin-top: 15px; margin-bottom: 0px;">
         <span class="title">"Top" Clubs</span>
@@ -241,6 +242,7 @@
                 </a>
             </div>
         </div>
+    </div>
     </div>
 
     <div style="display: inline-block; width: 34%; vertical-align: top;">
@@ -467,7 +469,7 @@
             });
             var xScale = d3.scaleBand()
                 .domain(seasons)
-                .range([40, 550]);
+                .range([40, 510]);
             xScale.invert = (function() {
                 var domain = xScale.domain()
                 var range = xScale.range()
@@ -886,7 +888,7 @@
             });
             var xScale = d3.scaleLinear()
                 .domain([xMin, xMax])
-                .range([40, 370]);
+                .range([40, 385]);
             var yScale = d3.scaleLinear()
                 .domain([yMin, yMax])
                 .range([255, 30]);
@@ -897,7 +899,7 @@
 
             var tScale = d3.scaleOrdinal()
                 .domain(seasons)
-                .range([40, 370])
+                .range([40, 385])
             tScale.invert = (function() {
                 var domain = tScale.domain()
                 var range = tScale.range()
@@ -918,7 +920,7 @@
                 .call(yAxis);
 
             comebackSvg.append("text")
-                .attr('transform', 'translate(280,300)')
+                .attr('transform', 'translate(220,300)')
                 .style("text-anchor", "middle")
                 .style("font-size", "11px")
                 .text("Total Number of Wins");
